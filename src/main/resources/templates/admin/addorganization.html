@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Everbridge Meraki Connector</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.4/dist/css/bootstrap.min.css" />
+    <script src="/bootstrap-3.3.4/js/jquery.min.js"></script>
+    <script src="/bootstrap-3.3.4/dist/js/bootstrap.min.js"></script>
+</head>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var duplicateOrgID = [[${duplicateOrgID}]]
+        if( duplicateOrgID == "true" ) {
+            alert("This organization does already exist! Please use another organization ID")
+        }
+    });
+</script>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <ul class="list-inline">
+            <li><img src="/image/logo.png"/></li>
+            <li style = "padding-top: 5px"><h4>Meraki Connector</h4></li>
+            <li style = "float:right; padding-top: 12px"><a href="/logout"><span class="glyphicon glyphicon-log-out">LogOut</span></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="sidebar" class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+            <h4>Admin</h4>
+            <ul class="sidebar-links">
+                <li><a href='/organizations'>Organizations</a></li>
+                <li><a href='/accounts'>Accounts</a></li>
+            </ul>
+        </div>
+        <div id="content" class="col-xs-12 col-sm-8 col-md-10 col-lg-10">
+            <h2>Add new organization</h2>
+                <form id='form' action="#" th:action="@{/organizations}" th:object="${organization}" method="post">
+                <table class='table' cellspacing='0' cellpadding='0' border='0'>
+                    <tr>
+                        <td>
+                            Name
+                        </td>
+                        <td>
+                            <input th:value="${organization.name}" type="text" th:field="*{name}" id="name" placeholder="" autofocus="autofocus" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Everbridge Organization Id
+                        </td>
+                        <td>
+                            <input th:value="${organization.ebOrganizationId}" type="text" th:field="*{ebOrganizationId}" id="ebOrganizationId" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Meraki Validator
+                        </td>
+                        <td>
+                            <input th:value="${organization.validator}" type="text" th:field="*{validator}" id="validator" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Meraki Secret
+                        </td>
+                        <td>
+                            <input th:value="${organization.secret}" type="text" th:field="*{secret}" id="secret" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Everbridge API Username
+                        </td>
+                        <td>
+                            <input th:value="${organization.apiUsername}" type="text" th:field="*{apiUsername}" id="apiUsername" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Everbridge API Password
+                        </td>
+                        <td>
+                            <input th:value="${organization.apiPassword}" type="text" th:field="*{apiPassword}" id="apiPassword" placeholder=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Environment
+                        </td>
+                        <td>
+                            <select name="environment">
+                                <option value='staging'  selected="selected" >staging</option>
+                                <option value='qa' >qa</option>
+                                <option value='production' >production</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Dynamic Location Update Interval (minutes)
+                        </td>
+                        <td>
+                            <select name="dynamicLocationUpdateInterval" >
+                                <option value='5'  selected="selected" >5</option>
+                                <option value='10' >10</option>
+                                <option value='15' >15</option>
+                                <option value='30' >30</option>
+                                <option value='60' >60</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Geolocate contacts to
+                        </td>
+                        <td>
+                            <select name="geolocateBy">
+                                <option value='location'  selected="selected" >Location Only</option>
+                                <option value='lat_lng' >Location + Lat/Lng</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Accounts
+                        </td>
+                        <td>
+                            <select multiple="multiple" id = "accountlist" class="selectpicker" name="accountlist">
+                                <option th:each="account:${accountlist}" th:value="${account.id}" th:text="${account.email}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="/organizations">List all</a>
+                        </td>
+                        <td>
+                            <input class='btn btn-success btn-sm' type='submit' style='float: right' value='Save'/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+

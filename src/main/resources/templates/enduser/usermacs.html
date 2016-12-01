@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Everbridge Meraki Connector</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.4/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.4/dist/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="/enduser/usermacs/css/usermacs.css" />
+    <link rel="stylesheet" type="text/css" href="/selectize.js-master/dist/css/selectize.default.css" />
+
+    <script th:inline="javascript" src="/enduser/usermacs/js/contactsearch.js"></script>
+    <script th:inline="javascript" src="/enduser/usermacs/js/selectize.js"></script>
+    <script th:inline="javascript" src="/enduser/usermacs/js/page.js"></script>
+
+    <script src="/bootstrap-3.3.4/js/jquery.min.js"></script>
+    <script src="/selectize.js-master/dist/js/standalone/selectize.js"></script>
+    <script src="/selectize.js-master/examples/js/index.js"></script>
+</head>
+
+<script th:inline="javascript">
+
+$(document).ready(function () {
+    initializeSelectize([[${contactList}]])
+    initializePage([[${curPage}]], [[${totalPages}]])
+});
+
+</script>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <ul class="list-inline">
+            <li><img src="/image/logo.png"/></li>
+            <li style = "padding-top: 5px"><h4>Meraki Connector</h4></li>
+            <li style = "float:right; padding-top: 12px"><a href="/logout"><span class="glyphicon glyphicon-log-out">LogOut</span></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+                <h4>Locations</h4>
+                <ul id='locations' class="sidebar-links">
+                    <li th:each="locationMainUI:${locationMainUIList}"><a th:href="@{/maps/location/} + ${locationMainUI.id}" data-location-id='${locationMainUI.id}' th:text = "${locationMainUI.name}"></a></li>
+                </ul>
+
+                <h4>Admin</h4>
+                <ul class="sidebar-links">
+                    <li><a href='/main'>Main</a></li>
+                    <li><a href='/useruploads'>Contacts</a></li>
+                    <li><a href='/usermacs'>Macs</a></li>
+                    <li><a href='/locations'>Locations</a></li>
+                    <li><a href='/accesspoints'>Access Points</a></li>
+                    <li><a href='/organizations'>Organization</a></li>
+                    <li><a href='/accounts'>Accounts</a></li>
+                </ul>
+        </div>
+        <div id="content" class="col-xs-12 col-sm-8 col-md-10 col-lg-10">
+            <div>
+                <h2>Contact to Mac mapping</h2>
+            </div>
+            <div id = "page" style="float: right;">
+                <!--<a rel="prev" href="/usermacs/page/4">&#8592; Previous</a>-->
+                <!--<a rel="start" href="/usermacs/page/1">1</a>-->
+                <!--<a href="/usermacs/page/2">2</a>-->
+                <!--<a href="/usermacs/page/3">3</a>-->
+                <!--<a rel="prev" href="/usermacs/page/4">4</a>-->
+                <!--<em class="current">5</em>-->
+                <!--<span class="disabled">Next &#8594;</span>-->
+            </div>
+            <div id="search">
+                    <input type='text' name='search' placeholder='Search' onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('btnSearch').click()"  />
+                    <button id = "btnSearch" type="button" onclick="search(this)" class="btn btn-default btn-sm"> Search </button>
+            </div>
+            <small> Note: When add or delete a MAC, it will be saved or deleted from database! </small>
+            <table class='table table-striped' cellspacing='' cellpadding='0' border='0'>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>External Id</th>
+                    <th>Mac Adress</th>
+                </tr>
+                <tr name = "trContact" th:each="contact:${contactList}">
+                    <td th:text="${contact.id}"></td>
+                    <td th:text="${contact.firstName}"></td>
+                    <td th:text="${contact.lastName}"></td>
+                    <td th:text="${contact.externalId}"></td>
+                    <td>
+                        <select name="select-links" placeholder="Input Mac Address to Search">
+                        </select>
+                        <!--<span style="visibility:hidden" class='hint'> Saved! </span>-->
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

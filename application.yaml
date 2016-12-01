@@ -1,0 +1,4 @@
+server:
+  port: 5000
+baseurl: http://www.merakibase.us-west-2.elasticbeanstalk.com/
+everbridgeurl: https://api.everbridge.net/rest/
